@@ -1,0 +1,12 @@
+{
+  "name": "Hotkeys for dict.cc vocab trainer",
+  "version": "0.1",
+  "description": "Simple extension adding hotkeys for adding and learning vocabularies using dict.cc.",
+  "manifest_version": 2,
+  "content_scripts": [
+    {
+      "matches": ["*://*.dict.cc/*"],
+      "js": ["contentScript.js"]
+    }
+  ]
+}
