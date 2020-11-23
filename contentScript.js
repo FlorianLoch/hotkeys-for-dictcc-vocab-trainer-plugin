@@ -115,7 +115,11 @@ const script = () => {
   }
 
   function addVocab() {
-    selectVocab();
+    // This should not remove the current row from the selection, therefore only trigger a "click"
+    // in case it isn't already marked as selected.
+    if (currentRowIdx > 0 && markedrows["tr" + currentRowIdx] !== 1) {
+      selectVocab();
+    }
 
     add2myvocab();
   }
