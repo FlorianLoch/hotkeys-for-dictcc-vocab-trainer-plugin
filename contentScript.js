@@ -5,17 +5,43 @@ const script = () => {
 
   console.log("'Hotkeys for dict.cc vocab trainer' script successfully inserted into page!");
 
+  // Remove the global key handler set by dict.cc
+  // Most of the functionality provided isn't needed with us,
+  // the rest we implement in another fashion.
+  // Focussing the search box happens by pressing "I" - as in "input" - first
+  // instead of pressing any key.
+  document.onkeydown = undefined;
+
+  // Wrap the callback triggered when vocabularies
+  // have successfully been added on the serverside
+  const add2myvocab_serverside_callback_orig = add2myvocab_serverside_callback;
+  add2myvocab_serverside_callback = (txt) => {
+    if (txt.startsWith("Err")) {
+      console.log(`Seems something went wrong trying to save vocabs to list '${my_vocab_lists["x" + current_trainerlist_id]}'.`);
+    } else {
+      console.log(`Successfully saved vocabs to list '${my_vocab_lists["x" + current_trainerlist_id]}'. It now contains ${txt} vocabs.`);
+    }
+    add2myvocab_serverside_callback_orig(txt);
+  };
+
   let currentRowIdx = 0;
 
   const hotkeyFns = {
     "ArrowUp": moveUp,
     "ArrowDown": moveDown,
-    "ArrowLeft": selectVocab,
-    "ArrowRight": addVocab,
+    "KeyS": selectVocab,
+    "KeyA": addVocab,
+    "KeyI": focusSearchBox,
+    "KeyP": pronounce,
     "Escape": focusPage
   }
 
   document.addEventListener("keyup", (e) => {
+    // Variable maintained by the main js source.
+    if (e.code !== "Escape" && inputhasfocus) {
+      return;
+    }
+
     const fn = hotkeyFns[e.code];
 
     if (fn) {
@@ -25,13 +51,15 @@ const script = () => {
     console.log("Received key pressed event: ", e.code);
   });
 
-  // Wrap the callback triggered when vocabularies
-  // have successfully been added on the serverside
-  const add2myvocab_serverside_callback_orig = add2myvocab_serverside_callback;
-  add2myvocab_serverside_callback = (txt) => {
-    console.log(`Successfully saved vocabs to list '${my_vocab_lists["x" + current_trainerlist_id]}'. It now contains ${txt} vocabs.`);
-    add2myvocab_serverside_callback_orig(txt);
-  };
+  function focusSearchBox() {
+    focus_searchbox();
+  }
+
+  function pronounce() {
+    const term_lang=lpp2_lc;
+    const id = idArr[currentRowIdx];
+    speak_nopop(id, term_lang+"_rec_ip");
+  }
 
   function focusPage() {
     document.activeElement.blur();
@@ -87,7 +115,9 @@ const script = () => {
   }
 
   function addVocab() {
-    add2myvocab_serverside();
+    selectVocab();
+
+    add2myvocab();
   }
 };
 
