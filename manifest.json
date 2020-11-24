@@ -5,8 +5,12 @@
   "manifest_version": 2,
   "content_scripts": [
     {
-      "matches": ["*://*.dict.cc/*"],
-      "js": ["contentScript.js"]
+      "matches": ["*://*.dict.cc/"],
+      "js": ["common.js", "resultList.js"]
+    },
+    {
+      "matches": ["*://*.my.dict.cc/trainer_v2/*"],
+      "js": ["common.js", "vocabTrainer.js"]
     }
   ]
 }

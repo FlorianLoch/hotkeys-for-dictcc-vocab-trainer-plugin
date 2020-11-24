@@ -3,15 +3,6 @@
 const script = () => {
   'use strict';
 
-  console.log("'Hotkeys for dict.cc vocab trainer' script successfully inserted into page!");
-
-  // Remove the global key handler set by dict.cc
-  // Most of the functionality provided isn't needed with us,
-  // the rest we implement in another fashion.
-  // Focussing the search box happens by pressing "I" - as in "input" - first
-  // instead of pressing any key.
-  document.onkeydown = undefined;
-
   // Wrap the callback triggered when vocabularies
   // have successfully been added on the serverside
   const add2myvocab_serverside_callback_orig = add2myvocab_serverside_callback;
@@ -26,7 +17,7 @@ const script = () => {
 
   let currentRowIdx = 0;
 
-  const hotkeyFns = {
+  const hotkeyFnsKeyUp = {
     "ArrowUp": moveUp,
     "ArrowDown": moveDown,
     "KeyS": selectVocab,
@@ -34,22 +25,9 @@ const script = () => {
     "KeyI": focusSearchBox,
     "KeyP": pronounce,
     "Escape": focusPage
-  }
+  };
 
-  document.addEventListener("keyup", (e) => {
-    // Variable maintained by the main js source.
-    if (e.code !== "Escape" && inputhasfocus) {
-      return;
-    }
-
-    const fn = hotkeyFns[e.code];
-
-    if (fn) {
-      fn(e);
-    }
-
-    console.log("Received key pressed event: ", e.code);
-  });
+  initialize(hotkeyFnsKeyUp, []);
 
   function focusSearchBox() {
     focus_searchbox();
@@ -99,8 +77,9 @@ const script = () => {
     else {
       if (currentRowIdx % 2) {
          // There is actually code in the page checking whether this
-         // value has been set - and if, a different color gets set (the same color) ^^.
-         // So this differentation is pointless - at least to me.
+         // value has been set - and if that's the case,
+         // a different color gets set (the same in both cases ) ^^.
+         // So I dont really understand this differentiation.
          // But perhaps there is a setting somewhere to have alternating row colors.
         setrowcolor(currentRowIdx, "#eeeeee");
       }
@@ -109,7 +88,7 @@ const script = () => {
       }
       markedrows["tr" + currentRowIdx] = 0;
 
-      // combine with this
+      // TODO: combine with this
       hlrow(currentRowIdx, 1);
     }
   }
@@ -125,12 +104,5 @@ const script = () => {
   }
 };
 
-runFnInPage(script);
 
-function runFnInPage(fn) {
-  const script = document.createElement('script');
-  const source = `(${fn.toString()})()`;
-
-  script.textContent = source;
-  document.head.appendChild(script);
-}
+copySourceIntoPage(shotgunifyFnSource(script));
