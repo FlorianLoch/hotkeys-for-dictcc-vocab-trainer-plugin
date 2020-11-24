@@ -5,7 +5,7 @@
   "manifest_version": 2,
   "content_scripts": [
     {
-      "matches": ["*://*.dict.cc/"],
+      "matches": ["*://*.dict.cc/*"],
       "js": ["common.js", "resultList.js"]
     },
     {
