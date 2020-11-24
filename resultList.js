@@ -45,6 +45,8 @@ const script = () => {
 
   function moveUp() {
     if (currentRowIdx === 1) {
+      // If we are already in the top most row jump into the search box
+      focusSearchBox();
       return;
     }
 
