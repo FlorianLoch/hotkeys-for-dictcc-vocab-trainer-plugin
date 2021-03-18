@@ -52,3 +52,13 @@ function copySourceIntoPage(src) {
 
 
 copySourceIntoPage(initializeFn);
+
+// The matching mechanism for content scripts is not sufficient in our case,
+// we therefore "manually" decide which script to inject. To make it easier we
+// inject the vocab trainer script when the URL looks like it and the result list script
+// for every other URL being matched by the content script pattern in manifest.json.
+if (window.location.href.match(/.*:\/\/.*my\.dict\.cc\/trainer_v2\/.*/)) {
+  copySourceIntoPage(shotgunifyFnSource(vocabTrainerScript));
+} else {
+  copySourceIntoPage(shotgunifyFnSource(resultListScript));
+}

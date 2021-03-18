@@ -1,7 +1,9 @@
 'use strict';
 
-const script = () => {
+const resultListScript = () => {
   'use strict';
+
+  console.log("=> ResultList module loaded.")
 
   // Wrap the callback triggered when vocabularies
   // have successfully been added on the serverside
@@ -105,6 +107,3 @@ const script = () => {
     add2myvocab();
   }
 };
-
-
-copySourceIntoPage(shotgunifyFnSource(script));

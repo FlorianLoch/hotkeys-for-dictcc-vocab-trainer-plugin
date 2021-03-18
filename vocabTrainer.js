@@ -1,7 +1,9 @@
 'use strict';
 
-const script = () => {
+const vocabTrainerScript = () => {
   'use strict';
+
+  console.log("=> VocabTrainer module loaded.")
 
   const hotkeyFnsKeyUp = {
     "KeyI": focusAnswerfield,
@@ -61,6 +63,3 @@ const script = () => {
     };
   }
 };
-
-
-copySourceIntoPage(shotgunifyFnSource(script));

@@ -3,14 +3,9 @@
   "version": "0.1",
   "description": "Simple extension adding hotkeys for adding and learning vocabularies using dict.cc.",
   "manifest_version": 2,
-  "content_scripts": [
-    {
+  "content_scripts": [{
       "matches": ["*://*.dict.cc/*"],
-      "js": ["common.js", "resultList.js"]
-    },
-    {
-      "matches": ["*://*.my.dict.cc/trainer_v2/*"],
-      "js": ["common.js", "vocabTrainer.js"]
+      "js": ["resultList.js", "vocabTrainer.js", "index.js"]
     }
   ]
 }
