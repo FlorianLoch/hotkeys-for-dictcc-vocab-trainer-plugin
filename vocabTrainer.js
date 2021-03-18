@@ -8,6 +8,7 @@ const vocabTrainerScript = () => {
   const hotkeyFnsKeyUp = {
     "KeyI": focusAnswerfield,
     "KeyP": pronounce, // SHIFT+P reads out the answer
+    "KeyU": undo,
     "Escape": focusPage,
     "Enter": answer(true, 1),
     "Backspace": answer(true, 3),
@@ -41,6 +42,10 @@ const vocabTrainerScript = () => {
       id: -1,
       change_buttons: false
     });
+  }
+
+  function undo() {
+    ft_undo_last_answer()
   }
 
   function focusPage() {

@@ -20,7 +20,6 @@ const initializeFn = function initialize(hotkeyFnsKeyUp, hotkeyFnsKeyDown) {
       }
 
       // Variable maintained by the main js source.
-      // TODO: also ignore input in case of of any other input field being the currently focussed element
       if (e.code !== "Escape" && inputhasfocus) {
         return;
       }
